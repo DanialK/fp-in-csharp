@@ -1,0 +1,233 @@
+
+import dark from '@mdx-deck/themes/dark'
+import highlight from '@mdx-deck/themes/syntax-highlighter-prism'
+import { Appear, Notes, Image } from 'mdx-deck'
+import Carousel from "./components/carousel";
+
+import "./style.css";
+
+export const themes = [
+  dark,
+  highlight
+]
+
+# Functional Programming in C#
+## Part 3
+## TODO
+
+<i>Danial Khosravi</i> 
+
+
+---
+
+## Talk Objectives
+
+<ul>
+
+  <Appear>
+  <li>Ways of working with Pattern Matching</li>
+  <li>Ad-Hoc Polymorphism and C#</li>
+  <li>FP things to avoid in C#</li>
+  </Appear>
+
+</ul>
+
+
+
+---
+
+## Pillars of Functional Programming
+
+<ul>
+
+  <Appear>
+
+  <li> First-Class Functions, Higher Order Functions </li>
+  <li> Ad Hoc Polymorphism </li>
+  <li> Purity and Immutability </li>
+  <li> Recursion </li>
+
+  </Appear>
+</ul>
+
+---
+
+## Immutable Complex Types in C# 
+
+<ul>
+  <Appear>
+
+  <li> C# lacks Record types (case classes in Scala, Records in Haskell or F#)</li>
+  <li> Structural equality</li>
+  <li> Structural ordering</li>
+  <li> Efficient hashing </li>
+  <li>
+    <b>LanguageExt</b> library has <b>{'Record<A>'}</b> type <br/>
+    Example <br/>
+    <i>records.linq</i>
+  </li>
+  <li>
+    Example <br/>
+    <i>FPinCSharp.ImmutableTypes</i> project
+  </li>
+  <li>
+    Lenses for working with Immutable Nested Complex Types in C# <br/>
+    Example <br/>
+    <i>FPinCSharp.Lenses</i> project
+  </li>
+
+  </Appear>
+</ul>
+
+---
+
+
+
+---
+
+## Ad Hoc Polymorphism
+
+---
+
+## Types of Polymorphism
+
+<ul>
+  <Appear>
+
+  <li> Parametric Polymorphism </li>
+  <li> Subtype Polymorphism </li>
+  <li> Ad Hoc Polymorphism </li>
+
+  </Appear>
+</ul>
+
+---
+
+### Parametric Polymorphism
+
+- Generics
+- Can be used with the other types of polymorphism
+
+---
+
+#### Parametric Polymorphism
+
+```cs
+public static class Helper
+{
+	private const string Start = "{{";
+	private const string End = "}}";
+	
+	public static string AddMustache<T>(T value)
+	{
+		return Start + value.ToString() + End;
+	}
+}
+```
+
+---
+
+### Subtype Polymorphism
+
+<ul>
+  <Appear>
+
+  <li>Shape base class with Circle and Rectangle subtypes </li>
+  <li>Powerful technique, be careful not to duck type </li>
+  <li>
+    Examples: <br/>
+    subtype-polymorphism.linq
+  </li>
+
+  </Appear>
+</ul>
+
+---
+
+### Ad Hoc Polymorphism
+
+<ul>
+  <Appear>
+
+  <li>Allows programmers to add traits to a type later </li>
+  <li>Useful for adding functionality to types we don't own (e.g DateTime) </li>
+  <li>Extension methods (kinda) enable Ad Hoc Polymorphism in C#  </li>
+  <li>Popular in languages like Haskell and Scala using Type Classes </li>
+  <li>Type Classes are like interfaces but for Extension Methods </li>
+  <li>
+    Examples: <br/>
+    <i>subtype-polymorphism.linq</i> <br/>
+    <i>ad-hoc-polymorphism-using-Extension-methods-in-csharp.linq</i> <br/>
+    <i>ad-hoc-polymorphism.linq</i>
+  </li>
+
+  </Appear>
+</ul>
+
+
+
+
+## Functional Concepts to Avoid in C# 
+
+---
+
+
+### Avoid currying in C#
+
+<ul>
+
+  <li>Currying is possible in C# using Func</li>
+  
+  <Appear>
+  
+  <li>Function signatures gets very verbose in C# when currying</li>
+  <li>Currying benefits in C# are not worth its drawbacks</li>
+  <li>Often not well understood and can cause confusion</li>
+
+  </Appear>
+
+</ul>
+
+---
+
+### Avoid Pattern Matching as an alternative to Polymorphism in C#
+
+<ul>
+
+  <Appear>
+  
+  <li>C# 7.0 introduced pattern matching</li>
+  <li>C# does not exhaustive pattern matching</li>
+  <li>That can lead to bugs that are picked at run time instead of compile time</li>
+  <li>In such cases, use polymorphism</li>
+  <li>Example</li>
+
+  </Appear>
+
+</ul>
+
+
+---
+
+### Avoid Recursion in C#
+
+<ul>
+
+  <Appear>
+  
+  <li>C# does not do tail recursion optimization</li>
+  <li>Will blow up the stack</li>
+
+  </Appear>
+
+</ul>
+
+---
+
+## Resources
+
+- LanguageExt - https://github.com/louthy/language-ext
+- Functional Programming in C# by Enrico Buonanno
+- Learn You a Haskell for Great Good! - http://learnyouahaskell.com
+- Functors, Applicatives, And Monads In Pictures - http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
+

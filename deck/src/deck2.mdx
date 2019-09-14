@@ -1,0 +1,346 @@
+
+import dark from '@mdx-deck/themes/dark'
+import highlight from '@mdx-deck/themes/syntax-highlighter-prism'
+import { Appear, Notes, Image } from 'mdx-deck'
+import Carousel from "./components/carousel";
+
+import "./style.css";
+
+export const themes = [
+  dark,
+  highlight
+]
+
+# Functional Programming in C#
+## Part 2
+
+<i>Danial Khosravi</i> 
+
+
+---
+
+## Part 1 Summary
+
+<ul>
+
+  <Appear>
+    <li>Immutability</li>
+    <li>Purity</li>
+    <li>Effects, Option</li>
+  </Appear>
+
+</ul>
+
+---
+
+## Talk Objectives
+
+<ul>
+
+  <Appear>
+    <li><b>Either</b> effect and functional error handling</li>
+    <li><b>Task</b> effect and handling asynchronosity funtionally</li>
+    <li><b>Applicative</b> and functions in an elevated world</li>
+  </Appear>
+
+</ul>
+
+
+---
+
+## Functional Error Handling With **Either**
+
+---
+
+## **Either<L, R> = Left(L) | Right(R)**
+
+<ul>
+
+  <Appear>
+    <li>Models the absence of valid value and the reason(s)</li>
+    <li>Models things that can go one way or another</li>
+    <li><i>Right</i> = All right</li>
+    <li><i>Left</i> = something went wrong</li>
+    <li>Great choice for dealing with exceptions in a pure functional fashion</li>
+  </Appear>
+
+</ul>
+
+
+---
+
+<p style={{marginBottom: "-10%"}}>
+  Either is a Monad, so it has <b>Bind</b> which allows us to chain Either based functions
+</p>
+
+<div style={{ transform: "scale(0.7)", marginTop: "50px", marginBottom: "-10%" }}>
+
+```cs
+public static Either<Rejection, Candidate> CheckEligibility(Candidate c);
+public static Either<Rejection, Candidate> CheckTest(Candidate c);
+public static Either<Rejection, Candidate> Interview(Candidate c);
+
+Either<Rejection, Candidate> Recruit (Candidate candidate)
+{
+  // Right: Utility to lift candidate to the elevated
+  // world of Either<Rejection, Candidate>
+  return Right(candidate)
+    .Bind(CheckEligibility)
+    .Bind(CheckTest)
+    .Bind(Interview)
+}
+```
+</div>
+
+---
+
+import either_circuit_breaking from "./images/either_circuit_breaking.png"
+import either_circuit_flow from "./images/either_circuit_flow.png"
+
+<div style={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
+  <img src={either_circuit_breaking} style={{ width: "50%", marginBottom: "20px"}} />
+  <img src={either_circuit_flow} style={{ width: "90%"}} />
+</div>
+
+
+---
+
+## Example 4
+
+- Using Either to handle errors
+
+---
+
+## C# LINQ Syntax
+
+
+<ul>
+
+  <Appear>
+    <li>Typically used for writing SQL like queries on <b>IEnumerable</b> or <b>IQueryable</b> data sources</li>
+    <li><code className="language-cs">from name in namesList select name.ToUpper()</code></li>
+    <li>Works on any type given <b>Select</b>, <b>SelectMany</b> and <b>Where</b> are implemented</li>
+    <li>Very useful for chaining Effectful/Monadic functions</li>
+    <li> <i>LanguageExt</i> library provides extension methods for all common effects (e.g Task, Option, Either) </li>
+  </Appear>
+
+</ul>
+
+---
+
+## Example 4 - LINQ Syntax
+
+- LINQ Syntax example
+- Review example 4 using the LINQ syntax
+
+---
+
+## **Try** and **TryAsync** and Exceptional Functions
+
+- Often we already have exceptional functions that want to reuse in our functional code without changing their type/implementation
+
+```cs
+var price = Try(() => int.Parse("1")); // Try<int>
+var priceTimesTwo = price.Map(x => x * 2);
+priceTimesTwo
+    .Match(
+        (result) => Console.WriteLine(result),
+        (ex) => Console.WriteLine(ex.Message)
+    );
+
+```
+
+---
+
+## **TryAsync**
+
+<div style={{ transform: "scale(0.70)" }}>
+
+```cs 
+var priceAsync = TryAsync(() => Task.FromResult(int.Parse("1"))); // TryAsync<int>
+var priceAsyncTimesTwo = priceAsync.Map(x => x * 2);
+await priceAsyncTimesTwo
+    .Match(
+        (result) => Console.WriteLine(result),
+        (ex) => Console.WriteLine(ex.Message)
+    );
+```
+</div>
+
+---
+
+## Working with **Multi-Argument Effectful Functions**
+
+
+---
+
+## Problem: Multi-Argument Effectful Functions
+
+<ul>
+
+  <Appear>
+    <li><b>Map</b> and <b>Bind</b> are powerful</li>
+    <li>Both take unary functions (functions with 1 argument)</li>
+    <li>Real world applications are complex and often composed of <br/>functions with many arguments </li>
+    <li>Often come from many sources e.g configuration, HTTP APIs and databases </li>
+    <li>How to use multi-argument <b>effectful</b> functions in an <b>elevated world</b>? </li>
+  </Appear>
+
+</ul>
+
+---
+
+## Solutions: **Monadic** or **Applicative** approaches
+
+<ul>
+
+  <h3><b>Monadic Approach</b></h3>
+
+  <Appear>
+    <li>perfect for sequential application flows</li>
+    <li>perfect for multi argument functions where some arguments have dependencies on each other </li>
+    <li>Given <b>userId</b>, <b>Transaction</b> <br/> => <b>User</b> -> <b>Transaction[]</b> -> <b>EnrichTransactions[]</b> -> <b>CheckFraud</b> </li>
+    <li>How? by chaining functions using <b>Bind/flatMap/SelectMany</b></li>
+  </Appear>
+
+</ul>
+
+---
+
+import bind_regular_vs_elevated_values from "./images/bind_regular_vs_elevated_values.png"
+
+## Bind/flatMap/SelectMany
+
+<ul>
+  <li>Chain sequential monadic functions using <b>Bind/flatMap/SelectMany</b></li>
+  <li>Given <b>userId</b>, <b>Transaction</b> <br/> => <b>User</b> -> <b>Transaction[]</b> -> <b>EnrichTransactions[]</b> -> <b>CheckFraud</b> </li>
+</ul>
+<br/>
+<img src={bind_regular_vs_elevated_values} />
+
+---
+
+## Solutions: **Monadic** or **Applicative** approaches
+
+<ul>
+
+  <h3><b>Applicative Approach</b></h3>
+  
+  <Appear>
+    <li>perfect for parallel application flows </li>
+    <li>perfect for multi argument functions with arguments that have no dependency on each other </li>
+    <li>
+      Given <i>userId</i> => <br/>
+      | <b>User</b> <br/>
+      | <b>Connections</b> <br/>
+      | <b>Photo Albums</b> <br/>
+      -----------------> <b>GenerateProfile</b>
+    </li>
+    <li>How? by providing arguments using the applicatives' <b>Apply</b> function</li>
+
+  </Appear>
+
+</ul>
+
+
+---
+
+## Applicatives
+
+---
+
+## Applicatives
+
+<ul>
+
+  <Appear>
+    <li><b>Apply</b> is a common functional HOF like Map and Bind </li>
+    <li>It used to provide arguments to <b>functions</b> in an <b>elevated world</b> </li>
+    <li>Functions (<i>{'Func<T>'}</i>) are just like any other values</li>
+    <li>Can be wrapped in a context/effect/box to be lifted in an elevated world</li>
+    <li>Useful for applying elevated values to functions that have non elevated arguments</li>
+    <li>Idea of a wrapped function is abstract, lets see an example</li>
+  </Appear>
+
+</ul>
+
+---
+
+
+```cs
+Func<int, int, int> multiply = (x, y) => x * y;
+
+/* Regular world */
+multiply(2, 3)        // 6
+
+/* Elevated world */
+Some(multiply)        // Some(x => y => x * y))
+  .Apply(Some(2))     // Some(y => 2 * y))
+  .Apply(Some(3))     // Some(6)
+```
+
+---
+
+
+```cs
+Func<User, User[], Album[], string> GenerateProfile;
+
+Func<int, Task<User>> FetchUser;
+Func<int, Task<User[]>> FetchConnections;
+Func<int, Task<Album[]>> FetchAlbums;
+
+Task.FromResult(GenerateProfile)
+    .Apply(FetchUser(userId))
+    .Apply(FetchConnections(userId))
+    .Apply(FetchAlbums(userId))
+```
+
+---
+
+import applicative_in_picture from "./images/applicative_in_picture.png"
+
+<Image src={applicative_in_picture} className="contain" />
+
+---
+
+## Example 5 and Example 6
+- Generate social media profile using the **Monadic** approach
+- Generate social media profile using the **Applicative** approach
+
+---
+
+## Traversables
+### working with **lists** of **elevated values**
+
+---
+
+<p>Transforms <b>{'MA<MB<T>>'}</b> to <b>{'MB<MA<T>>'}</b></p>
+<p>e.g <b>{'IEnumerable<Task<T>>'}</b> to <b>{'Task<IEnumerable<T>>'}</b></p> 
+
+<div style={{ transform: "scale(0.6)", "marginTop": "-10%"}}>
+
+```cs
+// Sometimes we have list of elevated values
+var as = new Option<int>[] { Some(1), Some(2), Some(3) };
+var ys = new Either<Exception, int>[] { Right(1), Right(2), Right(3) };
+var zs = new Task<int>[] { Task.FromResult(1), Task.FromResult(2), Task.FromResult(3) };
+
+// But we want an elevated list of values
+var xs = Some(new int[] {1, 2, 3});
+var ys = Right(new int[] {1, 2, 3});
+var zs = Task.FromResult(new int[] {1, 2, 3});
+```
+
+</div>
+
+---
+
+## Example Traversables
+
+---
+
+## Example 7 and Example 8
+
+- Example 7: Generating profile for many users at once
+- Example 8: Generating profile for many users at once, while handling failures
+

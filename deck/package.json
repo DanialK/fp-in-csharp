@@ -1,0 +1,19 @@
+{
+  "name": "fp-in-csharp-deck",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "mdx-deck": "^3.0.9",
+    "website-pdf": "^3.0.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "mdx-deck src/deck1.mdx",
+    "part1": "mdx-deck src/deck1.mdx",
+    "part2": "mdx-deck src/deck2.mdx",
+    "pdf": "website-pdf http://localhost:8000//print -o"
+  },
+  "author": "",
+  "license": "ISC"
+}

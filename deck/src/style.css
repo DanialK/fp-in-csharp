@@ -1,0 +1,21 @@
+strong, b, i, em {
+  color: skyblue;
+}
+i, em {
+  text-decoration: underline;
+}
+
+.contain.contain {
+  background-size: contain;
+}
+
+.imageRow.imageRow {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+
+small {
+  color: #b5b5b5;
+}

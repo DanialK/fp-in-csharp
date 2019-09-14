@@ -1,0 +1,775 @@
+
+import dark from '@mdx-deck/themes/dark'
+import highlight from '@mdx-deck/themes/syntax-highlighter-prism'
+import { Appear, Notes, Image } from 'mdx-deck'
+import Carousel from "./components/carousel";
+
+import "./style.css";
+
+export const themes = [
+  dark,
+  highlight
+]
+
+# Functional Programming in C#
+## Part 1
+
+<i>Danial Khosravi</i> 
+
+---
+
+## Talk Objectives
+
+Using a progressive example to learn more about:
+
+- Immutability
+- Purity
+- Introduction to Functional Effects
+- FP things to avoid in C#
+
+---
+
+import meme_ice_cube_1 from "./images/meme_ice_cube_1.jpg"
+import meme_ice_cube_2 from "./images/meme_ice_cube_2.jpeg"
+import meme_ice_cube_3 from "./images/meme_ice_cube_3.jpg"
+import meme_ice_cube_4 from "./images/meme_ice_cube_4.jpg"
+import meme_ice_cube_5 from "./images/meme_ice_cube_5.jpg"
+import meme_ice_cube_6 from "./images/meme_ice_cube_6.jpg"
+
+## Disclaimer
+
+<div style={{ display: "flex" }}>
+  <div style={{width: "50%"}}>
+    <ul>
+        <Appear>
+        <li> I'm not a C# expert </li>
+        <li> I'm not a functional programming expert </li>
+        <li> FP is full of great techniques that are language agnostic </li>
+        <li> These technique have helped me to be a better OOP programmer </li>
+        <li> C# and OOP are great and are here to stay </li>
+        <li> This talk invites you give functional approach to programming a try</li>
+        </Appear>
+    </ul>
+  </div>
+
+  <div style={{ width: "50%" }}>
+    <Carousel>
+    <img src={meme_ice_cube_1} style={{ width: "700px"}}/>
+    <img src={meme_ice_cube_2} style={{ width: "700px"}}/>
+    <img src={meme_ice_cube_3} style={{ width: "700px"}}/>
+    <img src={meme_ice_cube_4} style={{ width: "700px"}}/>
+    <img src={meme_ice_cube_5} style={{ width: "700px"}}/>
+    <img src={meme_ice_cube_6} style={{ width: "700px"}}/>
+    </Carousel>
+  </div>
+</div>
+
+---
+
+## Example 1
+
+---
+
+## Immutability
+
+---
+
+## Change vs Mutation
+
+
+<ul>
+  <Appear>
+
+  <li>Values <b>Change</b> over time, such as an inventory going up or down</li>
+  <li><b>Mutation</b> means data is update in place, the previous value is lost</li>
+  <li>In FP we represent change without mutation</li>
+  <li>
+    Create new instances that represent the data with the desired changes<br/>
+    <small>How? wait for example 2</small>
+  </li>
+  </Appear>
+</ul>
+
+---
+
+import meme_mutating_states from "./images/meme_mutating_states.jpg"
+
+
+## Encapsulate Mutation
+
+<div style={{ display: "flex", justifyContent: "space-around"}}>
+  
+<ul style={{ width: "45%"}}>
+  
+  <Appear>
+
+  <li>Local mutation is OK</li>
+  <li>As long as it modifies local state that's only visible within the scope of a function </li>
+  <li>Be practical and use these principles to your benefit </li>
+
+  </Appear>
+
+</ul>
+
+<img src={meme_mutating_states} style={{ width: "45%"}} />
+</div>
+
+---
+
+## Enforcing immutability in C#
+
+See what works the best for your team<br/>
+You can have immutability by convention by just *avoiding* it<br/>
+Or you can use some of the following techniques to enforce it:<br/>
+
+<ul>
+  <Appear>
+
+  <li>Remove property setters</li>
+  <li>Avoid object initializer syntax </li>
+  <li>Pass values through the constructor (more boilerplate)</li>
+  <li>Create <b>Copy</b>/<b>With</b> functions to create an updated instances</li>
+  <li>Mark your classes as sealed to prevent mutable subclasses</li>
+  <li>Use ImmutableLists from <b>System.Collections.Immutable</b></li>
+
+  </Appear>
+</ul>
+
+---
+
+## Higher Order Functions
+
+---
+
+## Higher Order Functions
+
+Functions that take other functions as inputs or return functions as output or both.
+
+import higher_order_functions_diagram from "./images/higher_order_functions_diagram.jpeg"
+import meme_higher_order_functions from "./images/meme_higher_order_functions.jpeg"
+
+<div className="imageRow" style={{ width: "100%"}}>
+  <img src={higher_order_functions_diagram} style={{ width: "65%"}}/>
+  <img src={meme_higher_order_functions} style={{ width: "30%"}}/>
+</div>
+
+---
+
+import higher_order_functions from "./images/higher_order_functions.jpeg"
+
+<Image src={higher_order_functions} className="contain" />
+
+---
+
+## Higher Order Functions in C# using LINQ
+
+<ul>
+
+  <Appear>
+
+  <li> Select (== map) </li>
+  <li> Where (== filter) </li>
+  <li> Aggregate (== reduce) </li>
+  <li> Zip (== zip) </li>
+  <li>
+    SelectMany (== flatMap or bind) <br />
+    <small>* bind is the most powerful HOF</small>
+  </li>
+  </Appear>
+
+</ul>
+
+---
+
+## Benefits of Higher Order Functions
+
+<ul>
+
+  <Appear>
+
+  <li> Readability </li>
+  <li> Avoid code duplication and better testability </li>
+  <li> Enables <b>Imperative</b> vs <b>Declarative</b> programming approach </li>
+  <li> Allow programming with <b>Expressions</b> as opposed to <b>Statements</b> </li>
+  <li> Makes your code more composable </li>
+  <li> Increase code reusability</li>
+  <li>Specially useful when introducing FP in a non functional c <br/>
+    <small>*more on this when we cover Functional Effects</small> <br/>
+  </li>
+
+  </Appear>
+
+</ul>
+
+
+<Notes>
+
+- Intent vs Approach
+
+</Notes>
+
+---
+
+#### Drawbacks of Higher Order Functions
+<ul>
+
+  <Appear>
+
+  <li> Increased stack use, the performance impact is often negligible </li>
+  <li> Debugging will be more complex because of the callbacks </li>
+
+  </Appear>
+
+</ul>
+
+
+<Notes>
+  - DB connection setup and teardown
+  - using statement into a HOF
+</Notes>
+
+---
+
+## Example 2
+- Using HOF and Immutability principles to improve our code
+
+---
+
+## Purity
+
+---
+
+## Pure functions
+
+<ul>
+  <Appear>
+
+  <li>Output depends entirely on the input arguments </li>
+  <li>Cause no side effects </li>
+  <li>Hold no state and do not mutate global state directly </li>
+  <li>Avoid mutating arguments </li>
+
+  </Appear>
+</ul>
+
+---
+
+## Side Effects
+
+<ul>
+  <Appear>
+
+  <li>Mutates global state (state visible outside of the function's scope) </li>
+  <li>Mutates its input arguments </li>
+  <li>Throws exceptions (there are arguments for and against this)</li>
+  <li>Performs any I/O operation</li>
+  
+  </Appear>
+</ul>
+
+---
+
+## Benefits of Pure Functions
+
+<ul>
+  <Appear>
+
+  <li>Easy to test and reason about </li>
+  <li>Order of evaluation isn't important </li>
+  <li>Can be Parallelized, Lazily evaluated and Cached/Memoized </li>
+  <li>Easier to refactor and maintain </li>
+
+  </Appear>
+</ul>
+
+---
+
+## Purity
+
+There are many facets to the concept of purity <br/>
+It's a powerful principle that can be deemed impractical
+
+<Appear>
+
+Most practical benefits of pure code are often achieved by:
+- Encapsulating I/O operations away from business logic
+- Avoid mutating the arguments
+- Avoiding partial functions
+
+</Appear>
+
+---
+
+## Strategies for Managing Side Effects
+import purity_keeping_IO_on_the_edges from "./images/purity_keeping_IO_on_the_edges.png"
+
+
+<Appear>
+
+<ul>
+
+  <li>Isolate I/O effects by keeping them at the edges of your code </li>
+  <li>Write business logic by composing pure code </li>
+
+</ul>
+
+<Image src={purity_keeping_IO_on_the_edges} className="contain" />
+
+<ul>
+
+  <li>Hard to achieve this all the time, so be practical about it</li>
+
+</ul>
+
+</Appear>
+
+
+---
+
+### Avoid mutating the arguments 
+
+```csharp
+public IActionResult GetThings(ThingDto thingDto)
+{
+  thingDto.UserId = DecodeJwt().UserId;
+  thingDto.ReceivedAt = DateTime.Now();
+  var result = DoWord(thingDto);
+  return Ok(result);
+}
+```
+
+---
+
+### Alternative solution without mutation 
+
+```csharp
+public IActionResult GetThings(ThingDto thingDto)
+{
+  var userId = DecodeJwt().UserId;
+  var receivedAt = DateTime.Now();
+  var result = DoWord(thingDto, userId, receivedAt);
+  return Ok(result);
+}
+```
+
+---
+
+### Avoid partial functions 
+
+---
+
+### Partial Functions
+
+- Mappings defined for **some** of elements of the domain
+
+- Not clear what the function should do, given an input for which it can’t compute a result
+
+- Type signature does not tell you about this shortcoming
+
+---
+
+### Partial Functions
+
+```cs
+public static Risk ClassifyRisk(int age)
+{
+  if (age < 0 || age > 119)
+  {
+    throw new ArgumentException();
+  }
+  ...
+}
+```
+
+---
+
+### Total Functions 
+mappings defined for **every** the elements of the domain
+
+```cs
+public static Risk ClassifyRisk(int age)
+{
+  if (age < 0 || age > 119)
+  {
+    return new Risk { Invalid = true };
+  }
+  ...
+}
+```
+
+
+----
+
+### Avoid partial functions 
+import partial_functions from "./images/partial_functions.png"
+import total_functions from "./images/total_functions.png"
+
+<div className="imageRow">
+  <img src={total_functions} style={{ width: "45%"}}/>
+  <img src={partial_functions} style={{ width: "45%"}}/>
+</div>
+
+---
+
+### Option, a natural solution to Partial Functions
+
+<ul>
+  <Appear>
+
+  <li>Models the possible absence of data</li>
+  <li>A container that wraps a value or no value</li>
+  <li><b>{'Option<T>'}</b> can have values of <b>None</b> or <b>Some(T)</b></li>
+  <li>Gain robustness by using <b>Option</b> instead of <b>null</b> (compile time safety) </li>
+  <li>Perfect for modeling nullable complex types </li>
+  <li>Natural way for encoding partial functions </li>
+  </Appear>
+</ul>
+
+---
+
+## **parseInt** as a total function
+import option_to_encode_partial_functions from "./images/option_to_encode_partial_functions.png"
+
+<Image src={option_to_encode_partial_functions} className="contain"/>
+
+---
+
+
+```csharp
+using LanguageExt;
+
+public static Option<Risk> ClassifyRisk(int age)
+{
+  if (age < 0 || age > 119)
+  {
+    return None;
+  }
+  var result = ...
+  return Some(result);
+}
+```
+
+---
+
+## Functional Effects
+
+<ul>
+
+  <Appear>
+  <li>Coding at different levels of abstraction</li>  
+  <li>Regular (<b>T</b>) vs Elevated values (<b>{'M<T>'}</b>) </li>
+  <li>It is a way to add an <b>Effect</b> to the underlying type</li>
+  <li>Elevated values are values within a specific <b>Context</b></li>
+  <li>Depending on the <b>Context</b>, additional behavior is added to our value <b>T</b>  </li>
+  <li>Effects are essentially a container that wraps a value </li>
+
+  </Appear>
+
+</ul>
+
+
+---
+
+import value_in_context from "./images/value_in_context.png"
+
+
+## Option
+
+<Image src={value_in_context} className="contain" />
+
+- Maybe == Option
+- Just(T) == Some(T)
+- Nothing == None
+
+
+---
+
+import changing_value_in_context from "./images/changing_value_in_context.png"
+
+## Changing the value in the context
+
+using <b>map</b> to change the value within a context
+
+<Image src={changing_value_in_context} className="contain" />
+
+
+---
+
+import changing_value_in_context_magic from "./images/changing_value_in_context_magic.png"
+
+map allows us to apply a function to a wrapped value
+
+## Changing the value in the context
+<Image src={changing_value_in_context_magic} className="contain" />
+
+
+---
+
+import changing_value_in_context_nothing from "./images/changing_value_in_context_nothing.png"
+
+## Changing the value in the context
+<Image src={changing_value_in_context_nothing} className="contain" />
+
+---
+
+import meme_in_n_out from "./images/meme_in_n_out.png"
+
+<Image src={meme_in_n_out} className="contain" />
+
+
+---
+
+## Option's Properties
+import option_map from "./images/option_map.png"
+
+<Image src={option_map} className="contain"/>
+
+---
+
+## *Unit* as a functional replacement for *void*
+
+##### *void*
+
+<ul>
+
+  <Appear>
+  <li>It's not type (it's magical)</li>  
+  <li>Doesn't allow things like <em>{'Option<void>'}</em></li>
+  <li>Doesn't compose </li>
+  </Appear>
+
+</ul>
+
+---
+
+## *Unit* as a functional replacement for *void*
+
+##### *Unit*
+
+<ul>
+
+  <Appear>
+  <li>Type that models absence of data without the problems of void</li>  
+  <li>
+    Usual return type of functions that cause side effects and return void <br/>
+    <small> e.g Logging </small> 
+  </li>  
+  <li>Can only take the singleton/const value of <em>unit</em></li>
+  <li>
+    Allow us to replace <em>{'Action'}</em> with <em>{'Func<Unit>'}</em> <br/>
+    to benefit from the compositional power of Functional Effects. <br/>
+    <small> More on this later </small> 
+  </li>
+  </Appear>
+
+</ul>
+
+---
+
+## Example 3
+
+- Using Option effect
+- Using Unit
+
+
+---
+
+## Functional Effects Continued
+
+---
+
+
+import list_effect from "./images/list_effect.png"
+
+## Lists as a useful Effect
+
+- Think of effects as containers for value(s)
+- List/Arrays are effects
+
+<Image src={list_effect} className="contain" />
+
+
+---
+
+## Functional Effects
+
+<ul>
+
+  <Appear>
+  
+  <li> <b>{'Option<T>'}</b> adds the effect of <i>optionality effect</i> - not <b>T</b> but possibility of a <b>T</b></li>
+  <li> <b>{'IEnumreable<T>'}</b> adds the effect of <i>aggregation effect</i> - a sequence of <b>T</b>'s</li>
+  <li> <b>{'Func<T>'}</b> adds effect of <i>laziness effect</i> - not a <b>T</b>, but a computation <br/> that can be evaluated to obtain a <b>T</b></li>
+  <li> <b>{'Task<T>'}</b> adds effect of <i>asynchrony</i> - not a <b>T</b>, but a promise that <br/> at some point you'll get a <b>T</b></li>
+
+  </Appear>
+
+</ul>
+
+
+---
+
+## Functional Effects
+
+<Appear>
+
+Functional effects are commonly known as <b>Monad</b>s
+
+A few of the useful effects:
+
+<ul>
+  <li>Option</li>
+  <li>List</li>
+  <li>Either, Try and Validation</li>
+  <li>Lens</li>
+  <li>Writer</li>
+  <li>Reader</li>
+  <li>State</li>
+</ul>
+
+</Appear>
+
+---
+
+import meme_monads_everywhere from "./images/meme_monads_everywhere.jpeg"
+
+<Image src={meme_monads_everywhere} className="contain" />
+
+---
+
+## Common Properties of Functional Effects
+
+<ul>
+
+<Appear>
+  <li>
+    Have implementation for <br/>
+    <em>map</em> <small> General FP name</small> <br/>
+    <em>Map</em> <small> LanguageExt </small> <br/>
+    <em>Select</em> <small> LINQ </small> <br/>
+  </li>
+  <li>
+    Have implementation for <br/>
+    <em>flatMap</em> <small> General FP name</small> <br/>
+    <em>Bind</em> <small> LanguageExt </small> <br/>
+    <em>SelectMany</em> <small> LINQ </small> <br/>
+  </li>
+  <li>
+    These HOFs make Functional Effects very <br/> composable, reusable and useful!
+  </li>
+</Appear>
+
+</ul>
+
+
+---
+
+import map_regular_vs_elevated_values from "./images/map_regular_vs_elevated_values.png"
+
+## Map/Select
+
+<ul>
+  <li><strong>Apply a function to a wrapped value</strong></li>
+  <li>Given a currency value of <em>{'AUD'}</em>, get <em>{'USD'}</em></li>
+  <li>Given a possible currency value of <em>{'Option<AUD>'}</em>, get <em>{'Option<USD>'}</em></li>
+</ul>
+<br/>
+<img src={map_regular_vs_elevated_values} />
+
+---
+
+
+## Implementation *Map* for Option
+
+
+```csharp
+public static Option<R> Map<T, R>
+   (this Option<T> optT, Func<T, R> f)
+    => optT.Match(
+        () => None,
+        (t) => Some(f(t)));
+```
+
+<small>
+  Useful for reading or transforming the value wrapped in an effect 
+</small>
+
+---
+
+import bind_regular_vs_elevated_values from "./images/bind_regular_vs_elevated_values.png"
+
+## Bind/flatMap/SelectMany
+
+<ul>
+  <li><strong>Apply a function that returns a wrapped value to a wrapped value</strong></li>
+  <li>given userId of type <em>int</em></li>
+  <li><em>FetchUser(userId)</em> returns <em>{'Task<User>'}</em></li>
+  <li><em>GetUserProfile(User)</em> returns <em>{'Task<UserProfile>'}</em></li>
+</ul>
+<br/>
+<img src={bind_regular_vs_elevated_values} />
+
+
+---
+
+## Implementation *Bind* for Option
+
+```csharp
+public static Option<R> Bind<T, R>
+   (this Option<T> optT, Func<T, Option<R>> f)
+    => optT.Match(
+        () => None,
+        (t) => f(t));
+```
+
+<small>
+  Useful for chaining multiple functions that return effects and sequential application flows
+</small>
+
+---
+
+
+## Why use Functional Effects?
+
+<ul>
+
+  <Appear>
+
+  <li>Increases code composability</li>
+  <li>Increases code reusability</li>
+  <li>Increase the robustness of the code</li>
+  <li>More informative type signatures (types as docs)</li>
+  <li>Extra compile time safety makes certain class of unit tests redundant</li>
+  <li>
+    Reduces complexity as most problems often fall within a few categories <br/>
+    and are commonly solved by mixing a few functional effects (often like LEGO)
+  </li>
+  </Appear>
+
+</ul>
+
+
+---
+
+## Functional Patterns
+
+
+<ul>
+
+  <Appear>
+  
+  <li>OOP gives us lots of useful patterns (e.g adapter, factory, strategy, ...)</li>
+  <li>Functional effects and data structures are FP's "patterns"</li>
+  <li>Common techniques and functions to combine/compose elevated values </li>
+  <li>Topic of another day ...</li>
+
+  </Appear>
+
+</ul>
+
+---
+
+import meme_fp_patterns from "./images/meme_fp_patterns.jpg"
+
+<Image src={meme_fp_patterns} className="contain" />
+
