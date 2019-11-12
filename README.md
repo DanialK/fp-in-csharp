@@ -70,5 +70,8 @@ To run each example, move into its respective folder and run `dotnet run`.
 - FP things to avoid in C#
   - Pattern Matching as a replacement for Polymorphism in C#
   - Currying
+    - Currying is great if a language has first class support for it
+    - Since in C# almost everything needs to be statically typed, you end up having very complex type signatures (`Func<Func<...>>`) which in my opinion, in many cases makes them less practical in C#
+    - There will be times that we cannot avoid them (e.g Apply functions)  
   - Recursion
     - How to write stack safe tail recursive functions using trampolining technique (fixing our not so stack safe Loop function in Examples 1-4)
